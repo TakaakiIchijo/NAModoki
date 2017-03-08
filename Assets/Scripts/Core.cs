@@ -40,16 +40,15 @@ public class Core : MonoBehaviour
 
     public void SaveFriendDataToNCMB(Vector3 position)
     {
-        NCMBObject gitaiDataNCMBObject = new NCMBObject("FriendData");
+        NCMBObject ncmbObject = new NCMBObject("FriendData");
 
-        // オブジェクトに値を設定
-        gitaiDataNCMBObject["Name"] = PlayerName;
-        gitaiDataNCMBObject["Message"] = Message;
-        //Vector3をNCMBに保存できるdoubleのArrayに変換する
-        gitaiDataNCMBObject["Position"] = position.ToDoubleArray();
+        // オブジェクトに値を設定//
+        ncmbObject["Name"] = PlayerName;
+        ncmbObject["Message"] = Message;
+        ncmbObject["Position"] = position.ToDoubleArray();
 
-        // データストアへの登録
-        gitaiDataNCMBObject.SaveAsync();
+        // データストアへの登録//
+        ncmbObject.SaveAsync();
     }
 
     public void FetchFriendDataFromNCMB(UnityAction<List<FriendData>> callback)
