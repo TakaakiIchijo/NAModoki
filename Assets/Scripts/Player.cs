@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerController : MonoBehaviour, IPausable
+public class Player : MonoBehaviour
 {
     public GameObject bulletPrefab;
     public FriendsContoroller friendsContoroller;
@@ -18,7 +16,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
     public float speed = 40f;
 
-    private bool isBulletIntervalLock =false;
+    private bool isBulletIntervalLock = false;
     public float bulletIntervalTime = 0.3f;
 
     public bool IsPaused { get; private set; }
@@ -35,8 +33,6 @@ public class PlayerController : MonoBehaviour, IPausable
         thisCollider = GetComponent<Collider>();
         thisRigidBody = GetComponent<Rigidbody>();
         rendererList = GetComponentsInChildren<MeshRenderer>().ToList();
-
-
     }
 
     public void SetDeathCallback(UnityAction callback)
@@ -51,7 +47,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
     private void Update()
     {
-        if(isDead)
+        if (isDead)
         {
             return;
         }
@@ -70,8 +66,7 @@ public class PlayerController : MonoBehaviour, IPausable
 
         if (Physics.Raycast(mouseRay, out hit, 100f, targetHitMask))
         {
-            targetPoint.transform.position = new Vector3(hit.point.x , 0.1f, hit.point.z);
-
+            targetPoint.transform.position = new Vector3(hit.point.x, 0.1f, hit.point.z);
         }
 
         this.transform.LookAt(new Vector3(targetPoint.transform.position.x, 1f, targetPoint.transform.position.z));
@@ -89,21 +84,14 @@ public class PlayerController : MonoBehaviour, IPausable
                 Invoke("ReleaseIntervalLock", bulletIntervalTime);
             }
         }
+
+        if (this.transform.position.y < -10)
+        {
+            Core.Instance.OnMainGame();
+        }
     }
 
-    public void OnPause()
-    {
-        IsPaused = true;
-        thisRigidBody.velocity = Vector3.zero;
-        thisRigidBody.angularVelocity = Vector3.zero;
-    }
-
-    public void OnResume()
-    {
-        IsPaused = false;
-    }
-
-    void ReleaseIntervalLock()
+    private void ReleaseIntervalLock()
     {
         isBulletIntervalLock = false;
     }
@@ -135,5 +123,4 @@ public class PlayerController : MonoBehaviour, IPausable
             Destroy(collision.gameObject);
         }
     }
-
 }

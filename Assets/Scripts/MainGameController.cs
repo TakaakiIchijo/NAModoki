@@ -8,7 +8,7 @@ public class MainGameController : MonoBehaviour
     public GameObject enemyPrefab;
     public float enemySpawnInterval = 2f;
     public Collider enemySpawnAreaCollider;
-    public PlayerController player;
+    public Player player;
 
     public Canvas retryCanvas;
 
